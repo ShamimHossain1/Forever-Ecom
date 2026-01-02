@@ -18,8 +18,8 @@ const SearchBar = () => {
         }
     },[location]);
 
-    console.log(exist);
-    console.log(showSearch)
+    // console.log(exist);
+    // console.log(showSearch)
 
     return showSearch && exist ? (
         <div className="border-t border-b bg-gray-50 text-center">

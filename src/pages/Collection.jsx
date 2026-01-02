@@ -83,7 +83,7 @@ const Collection = () => {
   }, [sortType]);
 
   return (
-    <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
+    <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-5 sm:pt-10 border-t border-gray-200">
       {/*
 
          ! Left Side  
@@ -105,10 +105,10 @@ const Collection = () => {
 
         {/* Category Filter  */}
         <div
-          className={`border border-gray-300 pl-5 py-3 mt-6 collapsible ${
-            showFilter ? "open" : ""
+          className={`  collapsible ${
+            showFilter ? "open " : ""
           }`}
-        >
+        > <div className="border pl-5 border-gray-300 py-3">
           <p className="mb-3 text-sm font-medium">Category</p>
           <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
             <p className="flex gap-2">
@@ -138,15 +138,18 @@ const Collection = () => {
               />{" "}
               Kids
             </p>
+
+          </div>
           </div>
         </div>
         {/* Sub-Category Filter */}
         <div
-          className={`border border-gray-300 pl-5 py-3 mt-6 collapsible ${
-            showFilter ? "open" : ""
+          className={`    collapsible ${
+            showFilter ? "open " : ""
           }`}
         >
-          <p className="mb-3 text-sm font-medium">Type</p>
+         <div className="border pl-5 mb-3 border-gray-300 mt-3 py-3">
+           <p className="mb-3 text-sm font-medium">Type</p>
           <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
             <p className="flex gap-2">
               {" "}
@@ -175,6 +178,7 @@ const Collection = () => {
               />{" "}
               Winterwear
             </p>
+         </div>
           </div>
         </div>
       </div>
