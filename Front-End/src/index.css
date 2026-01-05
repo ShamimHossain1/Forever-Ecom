@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Prata&display=swap');
+@import "tailwindcss";
+
+a.active hr{
+ display: block;
+}
+
+ *{
+    font-family: Outfit;
+} 
+
+.prata-regular {
+  font-family: "Prata", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@media (max-width:640px) {
+  a.active{
+    background-color: black;
+    color: white;
+  }
+}
+
+/* Collapsible animation for small-screen filters */
+.collapsible{
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 280ms cubic-bezier(.4,0,.2,1), opacity 200ms ease;
+}
+.collapsible.open{
+  max-height: 1000px; /* large enough to fit content */
+  opacity: 1;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* On larger screens, always show and disable animation */
+@media (min-width: 640px) {
+  .collapsible{
+    overflow: visible;
+    max-height: none;
+    opacity: 1;
+    transition: none;
+  }
+}
