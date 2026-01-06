@@ -1,20 +1,35 @@
 import React, { useState } from "react";
 import assets from "../assets/assets";
+import { backendUrl } from "../App";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const Login = () => {
-  const [currentState, setCurrentState] = useState("Sign Up");
+const Login = ({setToken}) => {
 
-  const[email, setEmail] = useState('admin@forever.com');
-  const[password, setPassword] = useState('password78');
+
+  const [email, setEmail] = useState("admin@forever.com");
+  const [password, setPassword] = useState("password78@");
 
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      
+      const response = await axios.post(backendUrl + "/api/user/admin", {
+        email,
+        password,
+      });
+      //   console.log(response);
+      if (response.data.success) {
+        setToken(response.data.token);
+        toast.success(response.data.message,{autoClose: 1500,position: "top-center"});
+      } else {
+        toast.error(response.data.message,{autoClose: 1500,position: "top-center"});
+      }
     } catch (error) {
-      console.log(error);
+      toast.error(error.message,{autoClose: 1500,position: "top-center"});
     }
   };
+
+  //   console.log(backendUrl);
 
   return (
     <div>
@@ -46,7 +61,7 @@ const Login = () => {
               className="w-full px-3 py-2 border border-gray-800"
               placeholder="Password"
             />
-            <button className="bg-black text-white font-light px-8 py-2 mt-4">
+            <button className="bg-black cursor-pointer text-white font-light px-8 py-2 mt-4">
               Sign In
             </button>
           </form>
