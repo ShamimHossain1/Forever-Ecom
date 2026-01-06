@@ -23,15 +23,15 @@ const App = () => {
         <Login setToken={setToken}></Login>
       ) : (
         <>
-          <Navbar></Navbar>
+          <Navbar setToken={setToken}></Navbar>
           <hr className=" border-gray-300" />
           <div className="flex w-full">
             <Sidebar></Sidebar>
             <div className="w-[70%] mx-auto ml-[max(5vw, 25px)] my-8 text-gray-600 text-base">
               <Routes>
-                <Route path="/add" element={<Add />}></Route>
-                <Route path="/list" element={<List />}></Route>
-                <Route path="/orders" element={<Orders />}></Route>
+                <Route path="/add" element={<Add token={token} />}></Route>
+                <Route path="/list" element={<List token={token} />}></Route>
+                <Route path="/orders" element={<Orders token={token} />}></Route>
               </Routes>
             </div>
           </div>
