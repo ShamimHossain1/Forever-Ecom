@@ -5,9 +5,13 @@ import { Routes, Route } from "react-router-dom";
 import Add from "./pages/Add";
 import List from "./pages/List";
 import Orders from "./pages/Orders";
+import Edit from "./pages/Edit";
 import Login from "./components/Login";
 import { ToastContainer } from "react-toastify";
+
+
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -31,6 +35,7 @@ const App = () => {
               <Routes>
                 <Route path="/add" element={<Add token={token} />}></Route>
                 <Route path="/list" element={<List token={token} />}></Route>
+                <Route path="/edit/:id" element={<Edit token={token} />}></Route>
                 <Route path="/orders" element={<Orders token={token} />}></Route>
               </Routes>
             </div>
@@ -40,5 +45,8 @@ const App = () => {
     </div>
   );
 };
+
+
+
 
 export default App;

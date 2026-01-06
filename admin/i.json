@@ -1,0 +1,118 @@
+
+[
+  {
+    name: "Women Round Neck Cotton Top",
+    description: "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves.",
+    price: 100,
+    images: ["https://res.cloudinary.com/dinjini78/image/upload/v1/products/p_img1.jpg"],
+    category: "Women",
+    subCategory: "Topwear",
+    sizes: ["S", "M", "L"],
+    bestseller: true,
+    createdAt: new Date(1716634345448)
+  },
+  {
+    name: "Men Round Neck Pure Cotton T-shirt",
+    description: "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves.",
+    price: 200,
+    images: [
+      "https://res.cloudinary.com/dinjini78/image/upload/v1/products/p_img2_1.jpg",
+      "https://res.cloudinary.com/dinjini78/image/upload/v1/products/p_img2_2.jpg",
+      "https://res.cloudinary.com/dinjini78/image/upload/v1/products/p_img2_3.jpg",
+      "https://res.cloudinary.com/dinjini78/image/upload/v1/products/p_img2_4.jpg"
+    ],
+    category: "Men",
+    subCategory: "Topwear",
+    sizes: ["M", "L", "XL"],
+    bestseller: true,
+    createdAt: new Date(1716621345448)
+  },
+  {
+    name: "Girls Round Neck Cotton Top",
+    description: "A lightweight, usually knitted, pullover shirt with a round neckline.",
+    price: 220,
+    images: ["https://res.cloudinary.com/dinjini78/image/upload/v1/products/p_img3.jpg"],
+    category: "Kids",
+    subCategory: "Topwear",
+    sizes: ["S", "L", "XL"],
+    bestseller: true,
+    createdAt: new Date(1716234545448)
+  },
+  {
+    name: "Men Round Neck Pure Cotton T-shirt",
+    description: "Close-fitting cotton t-shirt with a round neckline.",
+    price: 110,
+    images: ["https://res.cloudinary.com/dinjini78/image/upload/v1/products/p_img4.jpg"],
+    category: "Men",
+    subCategory: "Topwear",
+    sizes: ["S", "M", "XXL"],
+    bestseller: true,
+    createdAt: new Date(1716621345448)
+  },
+  {
+    name: "Women Round Neck Cotton Top",
+    description: "Comfortable cotton top for everyday wear.",
+    price: 130,
+    images: ["https://res.cloudinary.com/dinjini78/image/upload/v1/products/p_img5.jpg"],
+    category: "Women",
+    subCategory: "Topwear",
+    sizes: ["M", "L", "XL"],
+    bestseller: true,
+    createdAt: new Date(1716622345448)
+  },
+  {
+    name: "Girls Round Neck Cotton Top",
+    description: "Soft cotton top with round neck design.",
+    price: 140,
+    images: ["https://res.cloudinary.com/dinjini78/image/upload/v1/products/p_img6.jpg"],
+    category: "Kids",
+    subCategory: "Topwear",
+    sizes: ["S", "L", "XL"],
+    bestseller: true,
+    createdAt: new Date(1716623423448)
+  },
+  {
+    name: "Men Tapered Fit Flat-Front Trousers",
+    description: "Tapered fit trousers with flat front style.",
+    price: 190,
+    images: ["https://res.cloudinary.com/dinjini78/image/upload/v1/products/p_img7.jpg"],
+    category: "Men",
+    subCategory: "Bottomwear",
+    sizes: ["S", "L", "XL"],
+    bestseller: false,
+    createdAt: new Date(1716621542448)
+  },
+  {
+    name: "Men Round Neck Pure Cotton T-shirt",
+    description: "Casual cotton t-shirt for men.",
+    price: 140,
+    images: ["https://res.cloudinary.com/dinjini78/image/upload/v1/products/p_img8.jpg"],
+    category: "Men",
+    subCategory: "Topwear",
+    sizes: ["S", "M", "L", "XL"],
+    bestseller: false,
+    createdAt: new Date(1716622345448)
+  },
+  {
+    name: "Girls Round Neck Cotton Top",
+    description: "Everyday wear cotton top for girls.",
+    price: 100,
+    images: ["https://res.cloudinary.com/dinjini78/image/upload/v1/products/p_img9.jpg"],
+    category: "Kids",
+    subCategory: "Topwear",
+    sizes: ["M", "L", "XL"],
+    bestseller: false,
+    createdAt: new Date(1716621235448)
+  },
+  {
+    name: "Men Tapered Fit Flat-Front Trousers",
+    description: "Modern flat-front trousers with tapered fit.",
+    price: 110,
+    images: ["https://res.cloudinary.com/dinjini78/image/upload/v1/products/p_img10.jpg"],
+    category: "Men",
+    subCategory: "Bottomwear",
+    sizes: ["S", "L", "XL"],
+    bestseller: false,
+    createdAt: new Date(1716622235448)
+  }
+]
