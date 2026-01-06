@@ -9,7 +9,7 @@ const addProduct = async (req, res) => {
       price,
       category,
       subCategory,
-      sizes,
+      size,
       bestseller,
     } = req.body;
     const image1 = req.files.image1 && req.files.image1[0];
@@ -42,7 +42,7 @@ const addProduct = async (req, res) => {
       price: Number(price),
       category,
       subCategory,
-      size: JSON.parse(sizes),
+      size: JSON.parse(size),
       bestseller: bestseller === "true" ? true : false,
       image: imagesUrl,
       date: Date.now(),
@@ -90,7 +90,7 @@ const editProduct = async (req, res) => {
       price,
       category,
       subCategory,
-      sizes,
+      size,
       bestseller,
     } = req.body;
 
@@ -101,11 +101,17 @@ const editProduct = async (req, res) => {
       price: Number(price),
       category,
       subCategory,
-      size: typeof sizes === "string" ? JSON.parse(sizes) : sizes,
+      size: typeof size === "string" ? JSON.parse(size) : size,
       bestseller: bestseller === "true" || bestseller === true,
     };
 
-    // handle optional new images
+    // determine image array
+    let finalImages = [];
+
+    // existing images kept by client
+    const existing = req.body.existing ? JSON.parse(req.body.existing) : [];
+
+    // optional new images
     const imageFiles = [
       req.files?.image1?.[0],
       req.files?.image2?.[0],
@@ -114,7 +120,6 @@ const editProduct = async (req, res) => {
     ].filter(Boolean);
 
     if (imageFiles.length) {
-      const existing = await productModel.findById(id).select("image");
       const uploadedUrls = await Promise.all(
         imageFiles.map((file) =>
           cloudinary.uploader
@@ -122,8 +127,12 @@ const editProduct = async (req, res) => {
             .then((r) => r.secure_url)
         )
       );
-      updateData.image = [...existing.image, ...uploadedUrls];
+      finalImages = [...existing, ...uploadedUrls];
+    } else {
+      finalImages = existing;
     }
+
+    updateData.image = finalImages || existing;
 
     await productModel.findByIdAndUpdate(id, updateData);
     return res.json({ success: true, message: "Product updated successfully" });

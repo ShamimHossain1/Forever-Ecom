@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { backendUrl } from "../App";
+import assets from "../assets/assets";
 import { toast } from "react-toastify";
 
 const Edit = ({ token }) => {
@@ -64,7 +65,9 @@ const Edit = ({ token }) => {
       formData.append("price", price);
       formData.append("category", category);
       formData.append("subCategory", subCategory);
-      formData.append("sizes", JSON.stringify(sizes));
+      formData.append("size", JSON.stringify(sizes));
+      const existingImages = [preview1,preview2,preview3,preview4].filter(img=>img && img!==assets.upload_area);
+      formData.append("existing", JSON.stringify(existingImages));
       formData.append("bestseller", bestseller);
       if (image1) formData.append("image1", image1);
       if (image2) formData.append("image2", image2);
@@ -141,7 +144,7 @@ const Edit = ({ token }) => {
                       className="w-32 h-32 object-cover rounded-md border-2 border-dashed border-gray-300 hover:border-blue-500 transition-colors"
                       src={
                         preview ||
-                        "https://via.placeholder.com/128x128?text=Upload"
+                        assets.upload_area
                       }
                       alt="preview"
                     />
