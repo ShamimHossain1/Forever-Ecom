@@ -24,10 +24,13 @@ const List = () => {
     }
   };
 
-  console.log(list);
+  // console.log(list);
 
   useEffect(() => {
-    fetchList();
+    const getList = async () => {
+      await fetchList();
+    };
+    getList();
   }, []);
   const removeProduct = async (id) => {
     try {
