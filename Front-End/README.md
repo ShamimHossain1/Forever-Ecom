@@ -1,72 +1,58 @@
-# Forever Mern Ecom — Front-End
+# Front-End
 
-This folder contains the React/Vite front-end for the Forever Mern Ecom project — a small e-commerce storefront UI implemented with React, Vite and Tailwind CSS. The front-end is focused on product browsing, cart management and a simple checkout UI.
+This directory contains the React application that serves as the customer-facing user interface for the Forever MERN E-commerce project.
 
-## Tech stack
+## Technology Stack
 
-- React (v19) + Vite
-- Tailwind CSS
-- React Router DOM for routing
-- React Toastify for lightweight notifications
+- **React**: A JavaScript library for building user interfaces.
+- **Vite**: A fast build tool and development server for modern web projects.
+- **React Router DOM**: A library for handling routing in React applications.
+- **Axios**: A promise-based HTTP client for making requests to the `Back-End` API.
+- **Tailwind CSS**: A utility-first CSS framework for styling the application.
+- **React Toastify**: A library for displaying toast notifications.
 
-## Quick start
+## Project Structure
 
-1. Install dependencies
+The `Front-End` directory is structured as follows:
 
-```bash
-cd Front-End
-npm install
-```
+- **`public/`**: Contains static assets that are publicly accessible.
+- **`src/`**: Contains the main source code of the application.
+  - **`assets/`**: Contains static assets such as images and icons.
+  - **`components/`**: Contains reusable UI components used throughout the application (e.g., `Navbar`, `Footer`, `ProductItem`).
+  - **`context/`**: Contains the `ShopContext.jsx` file, which manages the global state of the application using React's Context API.
+  - **`pages/`**: Contains the main pages of the application, each corresponding to a specific route (e.g., `Home`, `Product`, `Cart`).
+  - **`App.jsx`**: The main component of the application, which defines the routes and the overall layout.
+  - **`main.jsx`**: The entry point of the application, where the React app is initialized and rendered.
 
-2. Start dev server
+## Features
 
-```bash
-npm run dev
-```
+- **Product Browsing**: Users can browse and search for products.
+- **Product Details**: Users can view detailed information about each product.
+- **Shopping Cart**: Users can add products to their shopping cart, update quantities, and view the cart total.
+- **User Authentication**: Users can register for a new account and log in.
+- **Order Placement**: Logged-in users can place orders and make payments.
+- **Order History**: Users can view their past orders.
+- **Responsive Design**: The application is designed to be responsive and work on different screen sizes.
 
-3. Build for production
+## State Management
 
-```bash
-npm run build
-```
+The application uses React's Context API for global state management. The `ShopContext.jsx` file provides a context that stores and manages the following data:
 
-## Project structure (key files)
+- **Products**: The list of all products, fetched from the `Back-End`.
+- **Shopping Cart**: The items in the user's shopping cart.
+- **User Authentication**: The user's authentication token and admin status.
 
-- `index.html` — Vite entry HTML.
-- `src/main.jsx` — application entry; mounts React tree and provides `BrowserRouter` + `ShopContext` provider.
-- `src/App.jsx` — top-level layout: `Navbar`, `SearchBar`, `Routes` and `Footer`.
-- `src/context/ShopContext.jsx` — single source of truth for front-end product list and cart state. Exposes:
-  - `products`: static product data from `src/assets/frontend_assets/assets`.
-  - `cartItems`: object structured as `{ <productId>: { <size>: quantity, ... }, ... }`.
-  - `addToCart(itemId, size)`, `getCartCount()`, `getCartAmount()`, `updateQuantity()`.
-- `src/components/*` — reusable components (e.g. `Navbar`, `ProductItem`, `RelatedProducts`, `CartTotal`, `Title`, `Footer`).
-- `src/pages/*` — route views (e.g. `Home`, `Product`, `Collection`, `Cart`, `Login`, `PlaceOrder`, `Orders`).
+The context also provides functions for interacting with the `Back-End` API to perform actions such as adding items to the cart, updating quantities, and placing orders.
 
-## How the front-end works (runtime flow)
+## How to Run
 
-1. `main.jsx` wraps the app with `BrowserRouter` and `ShopContextProvider` so all components can access routing and shared app state.
-2. `App.jsx` renders `Navbar` and `SearchBar`, then mounts route components defined under `Routes`.
-3. `ShopContext` holds a `products` array and `cartItems` object. Components read `products` to render catalog and look up product details by `_id` (for example `Product.jsx` reads `productId` from URL params and finds the matching product in `products`).
-4. Cart behavior:
-   - `addToCart(productId, size)` ensures `size` is selected and updates `cartItems` (keeps counts grouped by product and size).
-   - `Cart.jsx` converts `cartItems` into a flat list for rendering and allows quantity editing via `updateQuantity`.
-   - `CartTotal` computes subtotal + delivery fee using functions exposed by `ShopContext`.
-5. Checkout / Place Order UI is purely front-end in this repo (no API calls in the current code). Payment options (Stripe, Razorpay, COD) are UI placeholders — integrate with the Back-End endpoints or payment SDKs to make these functional.
-
-## Important implementation notes
-
-- Product data is currently imported from `src/assets/frontend_assets/assets` (static assets). To convert to a dynamic app, replace it with API calls to the Back-End and update `ShopContext` to fetch products.
-- `cartItems` is stored in memory only (React state). For persistence across sessions, add localStorage or server-side cart sync.
-- Routing: `Product` page expects a route param `/product/:productId` and resolves product details from `products`.
-
-## Recommendations & Next steps
-
-- Hook up product fetching from Back-End (`/api/products` — create endpoint) and replace static `products` import.
-- Persist cart per-user (localStorage or via Back-End user cart endpoints).
-- Add form validation and API integration for `Login`, `Signup`, and `Place Order`.
-- Add unit and integration tests for critical logic in `ShopContext` and cart computation functions.
-
-## Contact / contribution
-
-Open issues or pull requests in the repository; describe the goal and the area of the code you want to change.
-
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+2. **Set up environment variables**: Create a `.env` file in the `Front-End` directory and add the `VITE_BACKEND_URL` variable, which should point to the URL of the `Back-End` API.
+3. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+The application will be available at `http://localhost:5173` (or another port if 5173 is in use).

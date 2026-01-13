@@ -1,118 +1,60 @@
-# Forever Mern Ecom — Back-End
+# Back-End
 
-This folder contains the Back-End API for the Forever Mern Ecom project. It's an Express-based Node.js server that handles user registration, login and basic product persistence. The current code uses MongoDB (via Mongoose) and Cloudinary for media configuration.
+This directory contains the Node.js and Express application that serves as the API for the Forever MERN E-commerce project.
 
-## Tech stack
+## Technology Stack
 
-- Node.js (ES modules)
-- Express
-- MongoDB + Mongoose
-- Cloudinary (SDK) for image hosting
-- JWT for authentication
-- Bcrypt/Bcryptjs for password hashing
+- **Node.js**: A JavaScript runtime for building the server-side application.
+- **Express**: A web framework for Node.js that simplifies the creation of APIs.
+- **MongoDB**: A NoSQL database used to store product, user, and order data.
+- **Mongoose**: An Object Data Modeling (ODM) library for MongoDB and Node.js.
+- **JSON Web Token (JWT)**: Used for secure authentication of users and admins.
+- **Stripe**: A payment processing platform for handling online payments.
+- **Razorpay**: Another payment processing platform for handling online payments.
+- **Cloudinary**: A cloud-based service for managing images and videos.
+- **Multer**: A middleware for handling `multipart/form-data`, used for file uploads.
+- **CORS**: A middleware to enable Cross-Origin Resource Sharing.
 
-## Quick start
+## Project Structure
 
-1. Install dependencies
+The `Back-End` directory is structured as follows:
 
-```bash
-cd Back-End
-npm install
-```
+- **`config/`**: Contains configuration files for connecting to the database (`mongodb.js`) and Cloudinary (`cloudinary.js`).
+- **`controllers/`**: Contains the business logic for handling API requests. Each controller corresponds to a specific resource (e.g., `productController.js`, `userController.js`).
+- **`middleware/`**: Contains middleware functions, including authentication (`auth.js`, `adminAuth.js`) and file upload handling (`multer.js`).
+- **`models/`**: Defines the Mongoose schemas for the database collections (`productModel.js`, `userModel.js`, `orderModel.js`).
+- **`routes/`**: Defines the API routes and maps them to the corresponding controller functions.
+- **`server.js`**: The main entry point of the application. It initializes the Express server, connects to the database, and sets up the middleware and routes.
 
-2. Environment variables (create a `.env` file)
+## API Endpoints
 
-Required variables:
+The API provides a set of RESTful endpoints for managing products, users, carts, and orders.
 
-```
-MONGODB_URL=<your-mongodb-connection-prefix>
-JWT_SECRET=<your-jwt-secret>
-CLOUDINARY_CLOUD_NAME=<cloudinary-cloud-name>
-CLOUDINARY_API_KEY=<cloudinary-api-key>
-CLOUDINARY_API_SECRET_KEY=<cloudinary-api-secret>
-PORT=4000
-```
+### Authentication
 
-Note: `config/mongodb.js` appends `/e-commerce` to `MONGODB_URL` when connecting.
+- **User Authentication**: A JWT-based authentication system is implemented. The `authUser` middleware protects routes that require a logged-in user.
+- **Admin Authentication**: A separate `adminAuth` middleware protects routes that are only accessible to administrators. This middleware checks for an `isAdmin` flag in the JWT.
 
-3. Start server (development)
+### Routes
 
-```bash
-npm run server
-```
+- **`productRoute.js`**: Handles operations related to products, such as creating, reading, updating, and deleting products. Admin-only routes are protected by the `adminAuth` middleware.
+- **`userRoute.js`**: Manages user and admin registration and login.
+- **`cartRoute.js`**: Handles shopping cart operations, such as adding, removing, and viewing cart items. These routes are protected by the `authUser` middleware.
+- **`orderRoute.js`**: Manages orders, including placing orders, processing payments, and viewing order history. Some routes are for users, and some are for admins.
 
-4. Start server (production)
+### Payment Processing
 
-```bash
-npm start
-```
+The application integrates with both **Stripe** and **Razorpay** to process online payments. It also supports **Cash on Delivery (COD)**.
 
-## Folder structure (key files)
+## How to Run
 
-- `server.js` — app bootstrap: sets up middleware (`cors`, `express.json()`), connects to MongoDB and Cloudinary, mounts routes and starts the HTTP server.
-- `config/mongodb.js` — Mongoose connection helper. Emits `connected` / `error` logs.
-- `config/cloudinary.js` — Cloudinary v2 configuration helper.
-- `routes/userRoute.js` — routes for user auth: `POST /api/user/register`, `POST /api/user/login`, `POST /api/user/admin`.
-- `controllers/userController.js` — controller logic for register & login:
-  - `registerUser(req, res)` validates request body, checks whether the user exists, validates email format, enforces minimum password length, hashes the password with `bcrypt`/`bcryptjs`, saves the user and returns a JWT token.
-  - `loginUser(req, res)` finds user by email, compares passwords using `bcrypt.compare`, and returns a JWT on success.
-  - `createToke(userId)` signs `jwt` payload `{ id: userId }` with `JWT_SECRET` and returns a token. (Token expiry can be tuned in `createToke`.)
-- `models/userModel.js` — Mongoose schema for user. Fields: `name`, `email` (unique), `password`, `cartData` (object).
-- `models/productModel.js` — product schema used for persisting product data.
-
-## API Endpoints (current)
-
-- `POST /api/user/register` — create a new user
-
-  - Request JSON: `{ name, email, password }`
-  - Responses:
-    - `400` if data is missing, email invalid, password too short or user already exists.
-    - `200` success: `{ success: true, message, user, token }` where `token` is a JWT.
-
-- `POST /api/user/login` — authenticate user
-  - Request JSON: `{ email, password }`
-  - Responses:
-    - `200` success: `{ success: true, message, user, token }`.
-    - `200` (or `400`) failure: `{ success: false, message }`.
-
-> Note: The current code does not expose product CRUD endpoints. Add routes/controllers to manage products if you intend to serve dynamic product data to the front-end.
-
-## Implementation details & behavior notes
-
-- Input validation: `validator.isEmail` is used for email format checking; password length is enforced with a minimum of 6 characters. Consider stronger checks or `validator.isStrongPassword` for production.
-- Password hashing: `bcrypt.genSalt()` + `bcrypt.hash()` and `bcrypt.compare()` are used. The repo includes both `bcrypt` and `bcryptjs` in dependencies — only one is necessary. Use `bcrypt` for native performance or `bcryptjs` for simpler cross-platform install.
-- JWT tokens: `createToke(userId)` creates a token signed with `process.env.JWT_SECRET`. Ensure this secret is set. Tokens are returned to the client on register/login.
-- MongoDB connection string: `config/mongodb.js` connects to `${MONGODB_URL}/e-commerce`.
-- Middleware: `server.js` enables `cors()` and `express.json()` (required so `req.body` is populated). If you see `Cannot destructure property 'name' of 'req.body' as it is undefined`, verify that `express.json()` middleware is present and your client sends `Content-Type: application/json`.
-
-## Common issues & troubleshooting
-
-- Missing package error for `bcryptjs` vs `bcrypt`: install the package your code imports. Either:
-
-```bash
-npm install bcrypt   # or
-npm install bcryptjs
-```
-
-- `req.body` undefined: ensure `app.use(express.json())` is declared before routes in `server.js` and client sends JSON body with the correct `Content-Type` header.
-- JWT errors: set `JWT_SECRET` in environment.
-- MongoDB connection issues: confirm `MONGODB_URL` and that the server is reachable.
-
-## Security & production recommendations
-
-- Use `helmet` and tighten CORS policies in production.
-- Use stronger password policies (`validator.isStrongPassword`) and check for breached passwords via HaveIBeenPwned APIs.
-- Add rate-limiting on auth endpoints to mitigate brute-force attacks.
-- Store sensitive config in a secure environment (not in repo). Use rotation and strong secrets.
-
-## Next steps (suggested)
-
-- Add product CRUD endpoints and secure them (admin role). Use `productModel` for persistence.
-- Add refresh token flow, token blacklisting (logout) and role-based access control (admin vs user).
-- Add unit tests for controllers and integration tests for routes.
-
-If you want, I can:
-
-- add product endpoints and example routes,
-- implement server-side cart persistence for logged-in users,
-- or wire the Front-End to Back-End product endpoints and auth flows.
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+2. **Set up environment variables**: Create a `.env` file in the `Back-End` directory and add the necessary environment variables (e.g., database connection string, JWT secret, payment gateway API keys).
+3. **Start the server**:
+   ```bash
+   npm start
+   ```
+The server will start on the port specified in the environment variables (or a default port).

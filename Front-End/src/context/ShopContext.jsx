@@ -15,6 +15,7 @@ const ShopContextProvider = (props) => {
   const navigate = useNavigate();
   const [products, setProduct] = useState([]);
   const [token, setToken] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const addToCart = async (itemId, size) => {
     if (!size) {
@@ -75,7 +76,7 @@ const ShopContextProvider = (props) => {
 
     if (token) {
       try {
-       const response = await axios.post(
+        const response = await axios.post(
           backendUrl + "/api/cart/update",
           {
             itemId,
@@ -97,21 +98,21 @@ const ShopContextProvider = (props) => {
   // }, [cartItems])
 
   const getCartAmount = () => {
-    if(products.length > 0){
+    if (products.length > 0) {
       let totalAmount = 0;
-    for (const items in cartItems) {
-      let itemInfo = products.find((product) => product._id === items);
-      for (const item in cartItems[items]) {
-        try {
-          if (cartItems[items][item] > 0) {
-            totalAmount += cartItems[items][item] * itemInfo.price;
+      for (const items in cartItems) {
+        let itemInfo = products.find((product) => product._id === items);
+        for (const item in cartItems[items]) {
+          try {
+            if (cartItems[items][item] > 0) {
+              totalAmount += cartItems[items][item] * itemInfo.price;
+            }
+          } catch (error) {
+            console.log(error);
           }
-        } catch (error) {
-          console.log(error);
         }
       }
-    }
-    return totalAmount;
+      return totalAmount;
     }
   };
 
@@ -130,29 +131,28 @@ const ShopContextProvider = (props) => {
     }
   };
 
-  const getUserCart = async (token) =>{
+  const getUserCart = async (token) => {
     try {
-      const response = await axios.post(backendUrl + "/api/cart/get",{},{
-        headers:{token}
-      }) 
+      const response = await axios.post(
+        backendUrl + "/api/cart/get",
+        {},
+        {
+          headers: { token },
+        }
+      );
 
       // console.log(response.data);
 
-      if(response.data.success){
+      if (response.data.success) {
         setCartItems(response.data.cartData);
-      }
-      else{
+      } else {
         toast.error(response.data.message);
       }
-
-
-      
     } catch (error) {
       console.log(error);
       toast.error(error.message);
-      
     }
-  }
+  };
 
   // console.log(cartItems);
   useEffect(() => {
@@ -163,6 +163,23 @@ const ShopContextProvider = (props) => {
     if (!token && localStorage.getItem("token")) {
       setToken(localStorage.getItem("token"));
       getUserCart(localStorage.getItem("token"));
+    }
+    if (token) {
+      // fetch user profile to get role
+      (async () => {
+        try {
+          const res = await axios.post(
+            backendUrl + "/api/user/profile",
+            {},
+            { headers: { token } }
+          );
+          if (res.data.success) {
+            setIsAdmin(res.data.user?.role === "admin");
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      })();
     }
   }, [token]);
 
@@ -185,6 +202,7 @@ const ShopContextProvider = (props) => {
     setProduct,
     token,
     setToken,
+    isAdmin,
   };
   return (
     <ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>
