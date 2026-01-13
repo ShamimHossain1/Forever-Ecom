@@ -76,8 +76,25 @@ const PlaceOrder = () => {
           } else {
             toast.error(response.data.message);
           }
+          break;  
+        }
+        // Api calls for stripe
+        case "stripe": {
+          const res =  await axios.post(
+            backendUrl + "/api/order/stripePayment",
+            orderData,
+            { headers: { token } }
+          )
+          if(res.data.success){
+            const {session_url} = res.data;
+            window.location.replace(session_url)
+          }else{
+            toast.error(res.data.message, { autoClose: 1500 });
+          }
+          
           break;
         }
+
         default:
           break;
       }

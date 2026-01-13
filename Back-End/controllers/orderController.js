@@ -3,7 +3,7 @@ import userModel from "../models/userModel.js";
 import Stripe from "stripe";
 
 // Global variables
-const currency = "cad";
+const currency = "CAD";
 const deliveryFee = 10;
 
 // gateway initialize
@@ -77,7 +77,12 @@ const placeOrderStripe = async (req, res) => {
       line_items,
       mode: "payment",
     })
-  } catch (error) {}
+
+    res.json({ success: true, session_url: session.url });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
 };
 
 // placing orders using razorpay method
